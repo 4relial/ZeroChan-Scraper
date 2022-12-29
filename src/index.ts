@@ -86,7 +86,7 @@ export class ZeroChan {
                 count = count.replace(titleText + " ", '')
                 let countX = Math.ceil(Number(count) / 100)
                 if (countX > 99) countX = 99
-                if (Number(count) > 40) {
+                if (Number(count) > 10) {
                     titleList.push({
                         tag: titleText,
                         maxPage: countX
