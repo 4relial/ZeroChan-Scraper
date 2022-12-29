@@ -1,14 +1,5 @@
 import { ZeroChan } from "./src"
 
-// async function search(keyword: string, page: number = 1) {
-//     let opts = {
-//         page: page
-//     }
-//     let res = await getImage(keyword, opts);
-//     console.log(res)
-// }
-// search("Kamisato Ayaka", 2)
-
 let ZC = new ZeroChan()
 async function search(keyword: string, page: number = 1) {
     try {
