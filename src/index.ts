@@ -50,7 +50,7 @@ export class ZeroChan {
         this.cookie = res || undefined;
     }
 
-    getImage = async (keyword: any, page: Number = 1, strict: string = "yes") => {
+    getImage = async (keyword: any, page: Number = 1, strict: string = "on") => {
         if (isNaN(Number(page))) {
             throw new Error("Invalid Page Number!")
         }
@@ -63,7 +63,7 @@ export class ZeroChan {
             }
         }
         let strictMode: string = '&strict'
-        if (strict.toLowerCase() !== 'yes') {
+        if (strict.toLowerCase() !== 'off') {
             strictMode = ""
         }
         let res = await fetch(`https://www.zerochan.net/${keyword}?p=${page}&l=100&json${strictMode}`, opts)
