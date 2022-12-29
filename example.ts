@@ -10,8 +10,9 @@ async function search(keyword: string, page: number = 1) {
         console.log(detail)
         // let list = await ZC.getTags('ayaka')
         // console.log(list)
+        console.log(res.length)
     } catch (e) {
         console.log(e)
     }
 }
-search("Katou Megumi", 1)
+search("ninym ralei", 1)

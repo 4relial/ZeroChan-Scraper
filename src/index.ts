@@ -44,14 +44,13 @@ async function get_login(username: string, pass: string) {
     });
 }
 
-
 export class ZeroChan {
     login = async (username: string, password: string) => {
         let res = await get_login(username, password);
         this.cookie = res || undefined;
     }
 
-    getImage = async (keyword: any, page: Number = 1) => {
+    getImage = async (keyword: any, page: Number = 1, strict: string = "yes") => {
         if (isNaN(Number(page))) {
             throw new Error("Invalid Page Number!")
         }
@@ -63,7 +62,11 @@ export class ZeroChan {
                 }
             }
         }
-        let res = await fetch(`https://www.zerochan.net/${keyword}?p=${page}&l=100&json`, opts)
+        let strictMode: string = '&strict'
+        if (strict.toLowerCase() !== 'yes') {
+            strictMode = ""
+        }
+        let res = await fetch(`https://www.zerochan.net/${keyword}?p=${page}&l=100&json${strictMode}`, opts)
         let response = await safeParseJSON(res)
         if (response == false) throw new Error("Keyword Not Found!")
         if (response == "Login First") throw new Error("Not Found, please Use Login to Avoid this Error")
