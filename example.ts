@@ -1,6 +1,6 @@
 import { ZeroChan } from "./src"
 
-let ZC = new ZeroChan("Bot", "username")
+let ZC = new ZeroChan("Bot", "usernjhjkhkjhkame")
 async function search(keyword: string, page: number = 1) {
     try {
         let res = await ZC.getImage(keyword, page);

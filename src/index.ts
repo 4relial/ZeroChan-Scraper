@@ -62,7 +62,8 @@ export class ZeroChan {
         let opts: any = {};
             opts = {
                 headers: {
-                    "user-agent" : this.project
+                    "user-agent" : this.project,
+                    cookie: this.cookie
                 }
             }
 
@@ -82,7 +83,8 @@ export class ZeroChan {
     getTags = async (keyword: string) => {
         let opts = {
             headers: {
-                "user-agent" : this.project
+                "user-agent" : this.project,
+                cookie: this.cookie
             }
         }
         const response = await fetch(`https://www.zerochan.net/tags?q=${keyword}&t=&m=list`, opts);
@@ -115,7 +117,8 @@ export class ZeroChan {
 
             opts = {
                 headers: {
-                    "user-agent" : this.project
+                    "user-agent" : this.project,
+                    cookie: this.cookie
                 }
             }
 
