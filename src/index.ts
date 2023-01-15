@@ -1,6 +1,7 @@
 import fetch from 'node-fetch';
 import https from 'https';
 import cheerio from 'cheerio';
+import { Agent } from 'http';
 
 async function safeParseJSON(response: any) {
     let body: string = await response.text()
@@ -13,7 +14,7 @@ async function safeParseJSON(response: any) {
             return JSON.parse(body);
         } catch (e) {
             // console.log(body)
-            if (body.includes('Some content is for members only')) return "Login First"
+            if (body?.includes('Some content is for members only')) return "Login First"
             // throw err;
             return false
         }
@@ -50,38 +51,47 @@ export class ZeroChan {
         this.cookie = res || undefined;
     }
 
+    constructor(projectName: any, username: any) {
+        this.project = `${projectName} - ${username}` || undefined;
+    }
+
     getImage = async (keyword: any, page: Number = 1, strict: string = "on") => {
         if (isNaN(Number(page))) {
             throw new Error("Invalid Page Number!")
         }
         let opts: any = {};
-        if (this.cookie) {
             opts = {
                 headers: {
-                    cookie: this.cookie
+                    "user-agent" : this.project
                 }
             }
-        }
+
         let strictMode: string = '&strict'
         if (strict.toLowerCase() !== 'off') {
             strictMode = ""
         }
         let res = await fetch(`https://www.zerochan.net/${keyword}?p=${page}&l=100&json${strictMode}`, opts)
+        // console.log(await res.text())
         let response = await safeParseJSON(res)
-        if (response == false) throw new Error("Keyword Not Found!")
+        if (response == false) return "404"
         if (response == "Login First") throw new Error("Not Found, please Use Login to Avoid this Error")
         if (!response.items) throw new Error("Page Number Too High")
         return response.items
     }
 
     getTags = async (keyword: string) => {
-        const response = await fetch(`https://www.zerochan.net/tags?q=${keyword}&t=&m=list`);
+        let opts = {
+            headers: {
+                "user-agent" : this.project
+            }
+        }
+        const response = await fetch(`https://www.zerochan.net/tags?q=${keyword}&t=&m=list`, opts);
         const body = await response.text();
 
         // parse the html text and extract titles
         const $ = cheerio.load(body);
         const titleList: { tag: string; maxPage: number; }[] = []
-
+        // console.log($.text())
         $('#content').children('ul').each(function () {
             $(this).children('li').each(function () {
                 const titleText = $(this).children('a').text()
@@ -102,17 +112,18 @@ export class ZeroChan {
 
     getDetail = async (id: any) => {
         let opts: any = {};
-        if (this.cookie) {
+
             opts = {
                 headers: {
-                    cookie: this.cookie
+                    "user-agent" : this.project
                 }
             }
-        }
+
         let response = await fetch(`https://www.zerochan.net/${id}?json`, opts)
         let image = await safeParseJSON(response)
         return image
     }
 
     cookie: any;
+    project: any;
 }

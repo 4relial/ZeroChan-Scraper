@@ -12,11 +12,10 @@ npm i zerochan-scraper-ts
 
 ```js
 const { ZeroChan } = require('zerochan-scraper-ts')
-let ZC = new ZeroChan()
+let ZC = new ZeroChan("Project Name", "Username")
 
 async function getImage(keyword, page) {
     try {
-        await ZC.login("Your Username", "Your Password"); // create account: https://zerochan.net
         let res = await ZC.getImage(keyword, page);
         console.log(res)
     } catch (e) {
@@ -31,11 +30,10 @@ getImage("Katou Megumi", 2)
 
 ```js
 const { ZeroChan } = require('zerochan-scraper-ts')
-let ZC = new ZeroChan()
+let ZC = new ZeroChan("Project Name", "Username")
 
 async function getDetail(id) {
     try {
-        await ZC.login("Your Username", "Your Password"); // create account: https://zerochan.net
         let detail = await ZC.getDetail(id)
         console.log(detail)
     } catch (e) {
@@ -50,7 +48,7 @@ getDetail("2791848")
 
 ```js
 const { ZeroChan } = require('zerochan-scraper-ts')
-let ZC = new ZeroChan()
+let ZC = new ZeroChan("Project Name", "Username")
 
 async function getTag(keyword) {
     try {
