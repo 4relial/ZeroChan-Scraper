@@ -13,9 +13,8 @@ async function safeParseJSON(response: any) {
             body = body.replace("next: true", '"status": "done"')
             return JSON.parse(body);
         } catch (e) {
-            // console.log(body)
             if (body?.includes('Some content is for members only')) return "Login First"
-            // throw err;
+            console.log(body)
             return false
         }
     }
@@ -124,6 +123,8 @@ export class ZeroChan {
 
         let response = await fetch(`https://www.zerochan.net/${id}?json`, opts)
         let image = await safeParseJSON(response)
+        if (image == false) return "404"
+        if (image == "Login First") throw new Error("Not Found, please Use Login to Avoid this Error")
         return image
     }
 
