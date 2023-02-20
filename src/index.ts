@@ -11,15 +11,21 @@ async function safeParseJSON(response: any) {
     } catch (err) {
         try {
             body = body.replaceAll(/[\\]/g, "")
+            body = body.replaceAll(/[']/g, "")
             body = body.replace("next: true", '"status": "done"')
             return JSON.parse(body);
         } catch (e) {
-            if (body?.includes('Some content is for members only')) return "Login First"
-            var loggerx = fs.createWriteStream('log.txt', {
-                flags: 'a' // 
-            })
-            loggerx.write(e)
-            return false
+            try {
+                body = body.replace(/"tags":[^\]]+\],/g, "");
+                return JSON.parse(body);
+            } catch (e) {
+                if (body?.includes('Some content is for members only')) return "Login First"
+                var loggerx = fs.createWriteStream('logimage.txt', {
+                    flags: 'a' // 
+                })
+                loggerx.write(e)
+                return false
+            }
         }
     }
 }
@@ -63,12 +69,12 @@ export class ZeroChan {
             throw new Error("Invalid Page Number!")
         }
         let opts: any = {};
-            opts = {
-                headers: {
-                    "user-agent" : this.project,
-                    cookie: this.cookie
-                }
+        opts = {
+            headers: {
+                "user-agent": this.project,
+                cookie: this.cookie
             }
+        }
 
         let strictMode: string = '&strict'
         if (strict.toLowerCase() !== 'off') {
@@ -86,7 +92,7 @@ export class ZeroChan {
     getTags = async (keyword: string) => {
         let opts = {
             headers: {
-                "user-agent" : this.project,
+                "user-agent": this.project,
                 cookie: this.cookie
             }
         }
@@ -118,12 +124,12 @@ export class ZeroChan {
     getDetail = async (id: any) => {
         let opts: any = {};
 
-            opts = {
-                headers: {
-                    "user-agent" : this.project,
-                    cookie: this.cookie
-                }
+        opts = {
+            headers: {
+                "user-agent": this.project,
+                cookie: this.cookie
             }
+        }
 
         let response = await fetch(`https://www.zerochan.net/${id}?json`, opts)
         let image = await safeParseJSON(response)
