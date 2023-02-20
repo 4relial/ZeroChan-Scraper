@@ -2,6 +2,7 @@ import fetch from 'node-fetch';
 import https from 'https';
 import cheerio from 'cheerio';
 import { Agent } from 'http';
+import fs from 'fs';
 
 async function safeParseJSON(response: any) {
     let body: string = await response.text()
@@ -14,7 +15,10 @@ async function safeParseJSON(response: any) {
             return JSON.parse(body);
         } catch (e) {
             if (body?.includes('Some content is for members only')) return "Login First"
-            console.log(body)
+            var loggerx = fs.createWriteStream('log.txt', {
+                flags: 'a' // 
+            })
+            loggerx.write(e)
             return false
         }
     }
