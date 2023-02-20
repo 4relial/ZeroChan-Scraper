@@ -16,7 +16,8 @@ async function safeParseJSON(response: any) {
             return JSON.parse(body);
         } catch (e) {
             try {
-                body = body.replace(/"tags":[^\]]+\],/g, "");
+                body = body.replace(/"tags":\s*\[[^\]]*\]/g, '');
+                body = body.replace(/,\s*([\]}])/g, '$1');
                 return JSON.parse(body);
             } catch (e) {
                 if (body?.includes('Some content is for members only')) return "Login First"
