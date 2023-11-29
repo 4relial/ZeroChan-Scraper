@@ -57,8 +57,12 @@ async function get_login(username: string, pass: string) {
 
 export class ZeroChan {
     login = async (username: string, password: string) => {
-        let res = await get_login(username, password);
-        this.cookie = res || undefined;
+        try {
+            let res = await get_login(username, password);
+            this.cookie = res || undefined;
+        } catch (e) {
+            console.log(e)
+        }
     }
 
     constructor(projectName: any, username: any) {
