@@ -32,12 +32,16 @@ async function safeParseJSON(response: any) {
 }
 
 function parseCookies(response: any) {
-    const raw = response
-    return raw.map((entry: string) => {
-        const parts = entry.split(';');
-        const cookiePart = parts[0];
-        return cookiePart;
-    }).join(';');
+    try {
+        const raw = response
+        return raw.map((entry: string) => {
+            const parts = entry.split(';');
+            const cookiePart = parts[0];
+            return cookiePart;
+        }).join(';');
+    } catch (e) {
+        console.log(e)
+    }
 }
 
 async function get_login(username: string, pass: string) {
