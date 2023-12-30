@@ -45,7 +45,7 @@ function parseCookies(response: any) {
 }
 
 async function get_login(username: string, pass: string) {
-    let timeoutMs: 30000
+    let timeoutMs: number = 30000;
     const url = `https://www.zerochan.net/login?ref=%2F&name=${username}&password=${pass}&login=Login`;
 
     return new Promise((resolve, reject) => {
