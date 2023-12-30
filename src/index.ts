@@ -45,7 +45,6 @@ function parseCookies(response: any) {
 }
 
 async function get_login(username: string, pass: string) {
-    let timeoutMs: number = 30000;
     const url = `https://www.zerochan.net/login?ref=%2F&name=${username}&password=${pass}&login=Login`;
 
     return new Promise((resolve, reject) => {
@@ -64,7 +63,7 @@ async function get_login(username: string, pass: string) {
         });
 
         // Set timeout for the request
-        req.setTimeout(timeoutMs, () => {
+        req.setTimeout(60000, () => {
             req.abort(); // Abort the request on timeout
             reject(new Error('Request timed out'));
         });
