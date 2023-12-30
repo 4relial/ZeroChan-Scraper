@@ -61,13 +61,7 @@ async function get_login(username: string, pass: string) {
         req.on('error', (error) => {
             reject(error);
         });
-
-        // Set timeout for the request
-        req.setTimeout(60000, () => {
-            req.abort(); // Abort the request on timeout
-            reject(new Error('Request timed out'));
-        });
-
+        
         req.end(); // Send the request
     });
 }
