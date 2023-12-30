@@ -45,17 +45,31 @@ function parseCookies(response: any) {
 }
 
 async function get_login(username: string, pass: string) {
+    let timeoutMs: 30000
     const url = `https://www.zerochan.net/login?ref=%2F&name=${username}&password=${pass}&login=Login`;
-    return new Promise((resolve) => {
-        https.get(url, (res) => {
-            var data: any;
+
+    return new Promise((resolve, reject) => {
+        const req = https.get(url, (res) => {
+            let data: any = '';
             res.on("data", (chunk) => {
                 data += chunk;
             });
             res.on("end", () => {
-                resolve(parseCookies(res.headers['set-cookie']))
+                resolve(parseCookies(res.headers['set-cookie']));
             });
         });
+
+        req.on('error', (error) => {
+            reject(error);
+        });
+
+        // Set timeout for the request
+        req.setTimeout(timeoutMs, () => {
+            req.abort(); // Abort the request on timeout
+            reject(new Error('Request timed out'));
+        });
+
+        req.end(); // Send the request
     });
 }
 
