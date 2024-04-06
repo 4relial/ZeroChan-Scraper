@@ -61,7 +61,7 @@ async function get_login(username: string, pass: string) {
         req.on('error', (error) => {
             reject(error);
         });
-        
+
         req.end(); // Send the request
     });
 }
@@ -118,22 +118,17 @@ export class ZeroChan {
         // parse the html text and extract titles
         const $ = cheerio.load(body);
         const titleList: { tag: string; maxPage: number; }[] = []
-        // console.log($.text())
-        $('#content').children('ul').each(function () {
-            $(this).children('li').each(function () {
-                const titleText = $(this).children('a').text()
-                let count = $(this).last().text()
-                count = count.replace(titleText + " ", '')
-                let countX = Math.ceil(Number(count) / 100)
-                if (countX > 99) countX = 99
-                if (Number(count) > 10) {
-                    titleList.push({
-                        tag: titleText,
-                        maxPage: countX
-                    })
-                }
-            })
-        })
+
+        $('#tags-list').children('li.character').each(function () {
+            const titleText = $(this).find('a').text();
+            const countText: string = $(this).text().trim().split(' ').pop() || '0';
+            const count = parseInt(countText.replace(/,/g, ''));
+            titleList.push({
+                tag: titleText,
+                maxPage: Math.ceil(count / 100) > 99 ? 99 : Math.ceil(count / 100)
+            });
+        });
+
         return titleList
     }
 
