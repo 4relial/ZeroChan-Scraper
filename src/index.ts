@@ -80,10 +80,11 @@ export class ZeroChan {
         this.project = `${projectName} - ${username}` || undefined;
     }
 
-    getImage = async (keyword: any, page: Number = 1, strict: string = "on") => {
+    getImage = async (keyword: any, page: Number = 0, strict: string = "on") => {
         if (isNaN(Number(page))) {
             throw new Error("Invalid Page Number!")
         }
+        page = Number(page) + 1;
         let opts: any = {};
         opts = {
             headers: {
@@ -100,7 +101,10 @@ export class ZeroChan {
         // console.log(await res.text())
         let response = await safeParseJSON(res)
         if (response == false) return "404"
-        if (response == "Login First") throw new Error("Not Found, please Use Login to Avoid this Error")
+        if (response == "Login First") {
+            console.log("Login First")
+            throw new Error("Not Found, please Use Login to Avoid this Error")
+        }
         if (!response.items) throw new Error("Page Number Too High")
         return response.items
     }
