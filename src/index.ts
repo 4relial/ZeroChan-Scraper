@@ -96,14 +96,11 @@ export class ZeroChan {
         if (strict.toLowerCase() !== 'off') {
             strictMode = ""
         }
-        let res = await fetch(`https://www.zerochan.net/${keyword}?p=${page}&l=1&json${strictMode}`, opts)
+        let res = await fetch(`https://www.zerochan.net/${keyword}?p=${page}&l=100&json${strictMode}`, opts)
         // console.log(await res.text())
         let response = await safeParseJSON(res)
         if (response == false) return "404"
-        if (response == "Login First") {
-            console.log("Login First")
-            throw new Error("Not Found, please Use Login to Avoid this Error")
-        }
+        if (response == "Login First") throw new Error("Not Found, please Use Login to Avoid this Error")
         if (!response.items) throw new Error("Page Number Too High")
         return response.items
     }
@@ -128,7 +125,7 @@ export class ZeroChan {
             const count = parseInt(countText.replace(/,/g, ''));
             titleList.push({
                 tag: titleText,
-                maxPage: count
+                maxPage: Math.ceil(count / 100) > 99 ? 99 : Math.ceil(count / 100)
             });
         });
 
