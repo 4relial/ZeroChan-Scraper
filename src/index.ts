@@ -96,7 +96,7 @@ export class ZeroChan {
         if (strict.toLowerCase() !== 'off') {
             strictMode = ""
         }
-        let res = await fetch(`https://www.zerochan.net/${keyword}?p=${page}&l=100&json${strictMode}`, opts)
+        let res = await fetch(`https://www.zerochan.net/${keyword}?p=${page}&l=1&json${strictMode}`, opts)
         // console.log(await res.text())
         let response = await safeParseJSON(res)
         if (response == false) return "404"
@@ -128,7 +128,7 @@ export class ZeroChan {
             const count = parseInt(countText.replace(/,/g, ''));
             titleList.push({
                 tag: titleText,
-                maxPage: Math.ceil(count / 100) > 99 ? 99 : Math.ceil(count / 100)
+                maxPage: count
             });
         });
 
