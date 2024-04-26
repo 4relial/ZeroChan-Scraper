@@ -80,11 +80,10 @@ export class ZeroChan {
         this.project = `${projectName} - ${username}` || undefined;
     }
 
-    getImage = async (keyword: any, page: Number = 0, strict: string = "on") => {
+    getImage = async (keyword: any, page: Number = 1, strict: string = "on") => {
         if (isNaN(Number(page))) {
             throw new Error("Invalid Page Number!")
         }
-        page = Number(page) + 1;
         let opts: any = {};
         opts = {
             headers: {
