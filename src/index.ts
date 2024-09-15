@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 import https from 'https';
-import * as cheerio from 'cheerio';
+import cheerio from 'cheerio';
 import { Agent } from 'http';
 import fs from 'fs';
 
